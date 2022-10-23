@@ -1,0 +1,45 @@
+---
+# tasks for future deployments with Ansible by DevOps user
+- hosts: all
+  become: yes
+  vars:
+    username: devops
+  tasks:
+    - name: Create DevOps group for admin privileges
+      group:
+        name: devops
+        state: present
+
+    - name: Create user
+      user:
+        name: devops
+        password: '!'
+        groups: "devops"
+        shell: /bin/rbash
+
+    - name: Exchange SSH keys
+      authorized_key:
+        user: devops
+        state: present
+        key: "{{ lookup('file', '/home/sysadmin/.ssh/id_rsa.pub') }}"
+        path: '/etc/ssh/authorized_keys_{{ username }}'
+    
+    - name: Edit SSH configuration
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        state: present
+        regexp: '^#AuthorizedKeysfile'
+        line: 'AuthorizedKeysFile     .ssh/authorized_keys /etc/ssh/authorized_keys_%u'
+
+    - name: Restart SSH service
+      service:
+        name: sshd
+        state: restarted
+
+    - name: Edit sudo privileges for devops
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%devops'
+        line: '%devops ALL=(ALL) NOPASSWD: ALL'
+        validate: visudo -cf %s
