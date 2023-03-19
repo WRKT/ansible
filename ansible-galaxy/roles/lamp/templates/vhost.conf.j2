@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@locahost
+	DocumentRoot /var/www/html
+	
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	
+	<Directory /var/www/html>
+		Options -Indexes +FollowSymLinks
+		AllowOverride all
+		Require all granted
+	</Directory>
+
+	<IfModule mod_dir.c>
+		DirectoryIndex index.php index.html index.cgi index.xhtml index.htm
+	</IfModule>
+</VirtualHost>

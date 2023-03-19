@@ -1,0 +1,32 @@
+[DEFAULT]
+# Ban hosts for one hour:
+bantime = 3600
+
+# Override /etc/fail2ban/jail.d/00-firewalld.conf
+banaction = iptables-multiport
+
+#Règles pour SSH
+[sshd]
+enabled = true
+maxretry = 5
+findtime = 60
+bantime = 1200
+logpath = /var/log/fail2ban.log
+
+#Règle pour Apache
+[apache]
+enabled = true
+maxretry = 10
+findime = 120
+bantime = 2400
+logpath = /var/log/fail2ban.log
+
+
+#Règle pour les clients recidive (inconnu)
+[recidive]
+enabled = true
+findtime = 1d
+bantime = 1w
+
+
+

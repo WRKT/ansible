@@ -1,0 +1,34 @@
+---
+# tasks file for ufw
+- name: Installation UFW (Configuration de pare-feu)
+  apt:
+    name: ufw
+
+- name: Autoriser les accès au port http
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+    log: yes
+
+- name: Autoriser les accès au port ssh
+  ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+    log: yes
+
+- name: Autoriser les accès au port https
+  ufw:
+    rule: allow
+    port: '443'
+    proto: tcp
+    log: yes
+
+- name: Autoriser les ports pour MySQL
+  ufw:
+    rule: allow
+    port: '3306'
+    proto: tcp
+    log: yes
+

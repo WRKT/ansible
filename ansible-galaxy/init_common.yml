@@ -1,0 +1,10 @@
+---
+- hosts: allservers
+  roles:
+    - ssh
+    - ufw
+    - fail2ban
+
+  become: yes
+  become_user: root
+  become_method: sudo

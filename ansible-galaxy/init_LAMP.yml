@@ -1,0 +1,8 @@
+---
+- hosts: webservers
+  roles:
+    - ssh
+    - fail2ban
+    - ufw
+    - lamp
+  become: yes

@@ -1,0 +1,33 @@
+---
+# tasks file for common
+#
+# Mise à jour du système d'exploitation
+- name: Check server up to date
+  apt:
+    update_cache: yes
+    upgrade: dist
+# Installation des paquets communs à installer pour les taĉhes d'administration:    
+  name:
+      - fail2ban
+      - htop
+      - vim
+      - man
+      - manpages-fr
+      - bash-completion
+      - wget
+      - zip
+      - curl
+      - sudo
+      - pwgen
+      - tree
+# Ajouter l'utilisateur dans le groupe technique sshusers
+
+- name: Création du groupe
+  ansible.builtin.group:
+    name: sshusers
+    state: present
+
+- name: Ajout de l'utilisateur dans le groupe
+  ansible.builtin.user:
+    name: unknwnuser
+    group: sshusers

@@ -1,0 +1,21 @@
+# Configuration du daemon SSH par Ansible
+
+#Interdire la connexion au compte root
+DenyUsers root
+
+#Suppression de la connexion par mot de passe
+PasswordAuthentication no
+
+#Autorisation de la connexion par clé publique
+PubkeyAuthentication yes
+AuthorizedKeysFile	.ssh/authorized_keys .ssh/authorized_keys2
+
+#Activer le port par défaut pour SSH
+Port 22
+
+#Autoriser l'accès uniquement au groupe utilisateur sshusers
+AllowGroups sshusers
+
+#Activation des logs
+LogLevel INFO
+

@@ -1,0 +1,47 @@
+---
+# tasks file for WordPress
+- name: Télécharger et extraire la dernière version WordPresss
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: "/var/www/html"
+    remote_src: yes
+    creates: "/var/www/html/wordpress"
+
+- name: Donner les permissions pour les dossier
+  shell: "/usr/bin/find /var/www/html/wordpress/ -type d -exec chmod 750 {} \\;"
+
+- name: Donner les permissions aux fichiers
+  shell: "/usr/bin/find /var/www/html/wordpress/ -type f -exec chmod 640 {} \\;"
+
+- name: Configuration wp-config
+  template:
+    src: wp-config.php.j2
+    dest: "/var/www/html/wordpress/wp-config.php"
+
+- name: Création de la base de données pour WordPress
+  mysql_db:
+    name: "{{ mysql_db }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Création de l'utilisateur ayant les pleins droits sur la BDD
+  mysql_user:
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    priv: "{{ mysql_db }}.*:ALL"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Donner les propriétés de wordpress à www-data
+  file:
+    path: "/var/www/html/wordpress"
+    state: directory
+    recurse: yes
+    owner: "www-data"
+    group: "www-data"
+    mode: 0755
+
+  notify: restart apache
+

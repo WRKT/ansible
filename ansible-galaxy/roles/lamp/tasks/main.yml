@@ -1,0 +1,68 @@
+---
+# tasks file for lamp
+# Installation Apache
+- name: Installation Apache
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-php
+
+- name: Installation PHP
+  apt:
+    name:
+      - php-common
+      - php-mysql
+      - php-curl
+      - php-gd
+      - php-mbstring
+      - php-xml
+      - php-xmlrpc
+      - php-intl
+      - php-zip
+      - php-bz2
+      - php-fileinfo
+
+- name: Installation MySQL
+  apt:
+    name:
+      - mysql-server
+      - python3-pymysql 
+
+- name: Modification du fichier vhost par défaut Apache 
+  template:
+    src: vhost.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+  notify: restart apache
+
+- name: Donner la propriété du répertoire racine à l'utilisateur www-data
+  file:
+    path: "/var/www/html"
+    state: directory
+    recurse: yes
+    owner: "www-data"
+    group: "www-data"
+    mode: 0755
+
+- name: Configuration de MySQL
+  mysql_user:
+    login_host: 'localhost'
+    login_user: 'root'
+    login_password: ''
+    name: 'root'
+    password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Enlever les utilisateurs anonymes de la base de données
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Enlever la BDD test de MySQL
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"

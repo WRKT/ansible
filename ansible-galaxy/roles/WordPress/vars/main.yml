@@ -1,0 +1,8 @@
+---
+# vars file for lamp
+mysql_root_password: "P@ssw0rd"
+mysql_user: "admin"
+mysql_password: "P@ssw0rd"
+mysql_db: "wp_db"
+db_host: "127.0.0.1"
+

@@ -1,0 +1,6 @@
+---
+# Variable pour la BDD
+mysql_root_password: "P@ssw0rd"
+mysql_user: "admin"
+mysql_password: "P@ssw0rd"
+
