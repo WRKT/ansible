@@ -18,8 +18,8 @@
 # Ex 2: A collection of hosts belonging to the 'webservers' group:
 
 [allservers]
-192.168.0.26 ansible_user=unknwnuser
-127.0.0.1 ansible_user=unknwnuser
+192.168.0.26 ansible_user=devops
+127.0.0.1 ansible_user=devops
 
 [webservers]
 192.168.0.26 ansible_user=unknwnuser
